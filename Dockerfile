@@ -3,6 +3,10 @@ FROM ubuntu:16.04
 
 WORKDIR /opt
 
+RUN export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+RUN export HADOOP_HOME="/opt/hadoop-2.7.7"
+RUN export LD_LIBRARY_PATH=$HADOOP_HOME/lib/native:$LD_LIBRARY_PATH
+
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y openjdk-8-jdk \
     locales \
