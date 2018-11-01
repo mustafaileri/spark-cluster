@@ -1,0 +1,23 @@
+version: '3'
+services:
+  master:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+      - HADOOP_HOME="/opt/hadoop-2.7.7"
+      - LD_LIBRARY_PATH=$HADOOP_HOME/lib/native:$LD_LIBRARY_PATH
+
+    ports:
+      - "8080:8080"
+    command: "/opt/spark-2.3.1-bin-hadoop2.7/bin/spark-class org.apache.spark.deploy.master.Master -h master"
+
+  slave:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    command: "/opt/spark-2.3.1-bin-hadoop2.7/bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077"
+    depends_on:
+      - master
